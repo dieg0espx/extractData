@@ -1,17 +1,13 @@
 const express = require('express');
 const axios = require('axios');
 const cheerio = require('cheerio');
-
+const cors = require('cors');
 const app = express();
+
+app.use(cors());
 const port = 3000; // Set your desired port number
 
-// Define a function to clean up text
-function fixText(text) {
-  // Implement your text cleanup logic here
-  // Example: Replace unwanted characters or HTML tags
-  // For now, return the input text as-is
-  return text;
-}
+
 
 app.get('/items', async (req, res) => {
   try {
@@ -39,7 +35,7 @@ app.get('/items', async (req, res) => {
     // Process additional descriptions
     $('.key-features p').each((index, element) => {
       const paragraph = $(element);
-      const text = fixText(paragraph.text());
+      const text = paragraph.text();
       description += text + '\n';
     });
 
@@ -48,7 +44,7 @@ app.get('/items', async (req, res) => {
     const src = imgElement.attr('data-src');
     image = src || '';
 
-    res.json({ title, description, image });
+    res.json({ title:title, description:description, image:image });
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Internal server error' });

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Data Example</title>
+</head>
+<body>
+    <script>
+        function getData() {
+            var urlInput = document.getElementById('urlInput');
+            var url = urlInput.value;
+            
+            fetch('http://localhost:3000/items/?url=' + url)
+                .then(response => response.json())
+                .then(data => {
+                    // Update placeholders with fetched data
+                    document.getElementById('title').innerText = data.title;
+                    document.getElementById('description').innerText = data.description;
+                    document.getElementById('image').innerHTML = `<img src="${data.image}" alt="Image">`;
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+    </script>
+
+    <input type="text" id="urlInput" placeholder="URL"/>
+    <button onclick="getData()">Get Data</button>
+
+    <h2 id="title"></h2>
+    <p id="description"></p>
+    <div id="image"></div>
+</body>
+</html>
